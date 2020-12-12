@@ -65,6 +65,31 @@ app.delete('/api/persons/:id', (req,res) => {
     }
 })
 
+const randomId = () => {
+    let maxValue = 100000
+    let Id = Math.floor(Math.random() * maxValue) + 1;
+    while (phonebook.find(p => p.id === Id)) {
+        if (maxValue <= phonebook.length) {
+            maxValue *= 10
+        }
+        Id = Math.floor(Math.random() * maxValue) + 1;
+    }
+    return Id
+}
+
+app.post('/api/persons', (req,res) => {
+    const body = req.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: randomId()
+    }
+
+    phonebook = phonebook.concat(person)
+    res.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
