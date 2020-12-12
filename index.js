@@ -41,7 +41,11 @@ let phonebook = [
 ]
 
 app.get('/', (req,res) => {
-    res.send('Phonebook available in subfolder <this url>/api/persons')
+    let url = req.hostname
+    if (url === 'localhost') {
+        url = url.concat(':3001')
+    }
+    res.send(`Phonebook available in url http://${url}/api/persons`)
 })
 
 app.get('/api/persons', (req,res) => {
