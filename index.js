@@ -81,15 +81,15 @@ app.post('/api/persons', (req,res) => {
     const body = req.body
 
     if (!body.name){
-        res.status(400).json({
+        return res.status(400).json({
             error: 'Name is a mandatory field'
         })
     } else if (!body.number){
-        res.status(400).json({
+        return res.status(400).json({
             error: 'Number is a mandatory field'
         })
     } else if (phonebook.find(p => p.name === body.name)){
-        res.status(409).json({
+        return res.status(409).json({
             error: 'Name must be unique'
         })
     }
