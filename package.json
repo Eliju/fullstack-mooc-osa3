@@ -1,0 +1,25 @@
+{
+  "name": "phonebook-server",
+  "version": "0.9.0",
+  "description": "Server side of phonebook app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eliju/fullstack-mooc-osa3.git"
+  },
+  "author": "Eliju",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eliju/fullstack-mooc-osa3/issues"
+  },
+  "homepage": "https://github.com/Eliju/fullstack-mooc-osa3#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
