@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const dotenv = require('dotenv').config({path: '.env'})
 const app = express()
+const Person = require('./models/person')
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
@@ -51,7 +52,9 @@ app.get('/', (req,res) => {
 })
 
 app.get('/api/persons', (req,res) => {
-    res.json(phonebook)
+    Person.find({}).then(persons =>{
+        res.json(persons)
+    })
 })
 
 app.get('/info', (req,res) => {
@@ -63,14 +66,11 @@ app.get('/info', (req,res) => {
 
 app.get('/api/persons/:id', (req,res) => {
     const id = Number(req.params.id)
-    const person = phonebook.find((p => p.id === id))
-    // get an environment variable
-    let token = process.env['MONGODB_USER'];
-    console.log(token)
-    token = process.env['MONGODB_USER_PW'];
-    console.log(token)
-    token = process.env['MONGODB_DATABASE'];
-    console.log(token)
+    // const person = phonebook.find((p => p.id === id))
+    Person.find({id:id}).then(persons =>{
+        res.json(persons)
+    })
+
     if (!person) {
         res.status(404).end()
     } else {

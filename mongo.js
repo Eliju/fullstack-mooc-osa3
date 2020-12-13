@@ -7,7 +7,7 @@ if (process.argv.length < 3){
 
 const pw = process.argv[2]
 
-const urlMongoDB = `mongodb+srv://phonebook-mongo-user:${pw}@phonebookcluster.tw9av.mongodb.net/phonebook?retryWrites=true&w=majority`
+const urlMongoDB = `mongodb+srv://phonebook-mongo-user:${pw}@phonebookcluster.tw9av.mongodb.net/p?retryWrites=true&w=majority`
 
 mongoose.connect(urlMongoDB, 
     {
