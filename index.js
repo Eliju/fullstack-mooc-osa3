@@ -65,17 +65,16 @@ app.get('/info', (req,res) => {
 })
 
 app.get('/api/persons/:id', (req,res) => {
-    const id = Number(req.params.id)
+    const id = req.params.id
     // const person = phonebook.find((p => p.id === id))
-    Person.find({id:id}).then(persons =>{
-        res.json(persons)
+    Person.find({"_id":id}).then(person =>{
+        if (!person) {
+            res.status(404).end()
+        } else {
+            res.json(person)
+        }
     })
 
-    if (!person) {
-        res.status(404).end()
-    } else {
-        res.json(person)
-    }
 })
 
 app.delete('/api/persons/:id', (req,res) => {
@@ -91,7 +90,7 @@ app.delete('/api/persons/:id', (req,res) => {
     }
 })
 
-const randomId = () => {
+/* const randomId = () => {
     let maxValue = 100000
     let Id = Math.floor(Math.random() * maxValue) + 1;
     while (phonebook.find(p => p.id === Id)) {
@@ -101,7 +100,7 @@ const randomId = () => {
         Id = Math.floor(Math.random() * maxValue) + 1;
     }
     return Id
-}
+} */
 
 app.post('/api/persons', (req,res) => {
     const body = req.body
@@ -120,14 +119,16 @@ app.post('/api/persons', (req,res) => {
         })
     }
 
-    const person = {
+    const person = new Person ({
         name: body.name,
         number: body.number,
-        id: randomId()
-    }
+        // id: randomId()
+    })
 
-    phonebook = phonebook.concat(person)
-    res.json(person)
+    person.save().then(savedPerson => {
+        phonebook = phonebook.concat(savedPerson)
+        res.json(savedPerson)
+    })
 })
 
 const PORT = process.env.PORT || 3001
