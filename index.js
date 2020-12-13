@@ -1,11 +1,12 @@
-const e = require('express')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const dotenv = require('dotenv').config({path: '.env'})
 const app = express()
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
+
 
 morgan.token('body', function getBody(req) {
     if(req.method === 'POST'){
@@ -63,7 +64,13 @@ app.get('/info', (req,res) => {
 app.get('/api/persons/:id', (req,res) => {
     const id = Number(req.params.id)
     const person = phonebook.find((p => p.id === id))
-
+    // get an environment variable
+    let token = process.env['MONGODB_USER'];
+    console.log(token)
+    token = process.env['MONGODB_USER_PW'];
+    console.log(token)
+    token = process.env['MONGODB_DATABASE'];
+    console.log(token)
     if (!person) {
         res.status(404).end()
     } else {
