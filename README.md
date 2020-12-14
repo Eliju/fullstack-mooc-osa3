@@ -7,4 +7,5 @@ http://phonebook-server-eliju.herokuapp.com/api/persons
 Frontend available in :
 http://phonebook-server-eliju.herokuapp.com/
 
-MongoDB: get all, get one, delete ready
+Tested both locally in http://localhost:3001/
+and in heroku in http://phonebook-server-eliju.herokuapp.com/
