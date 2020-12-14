@@ -20,29 +20,6 @@ morgan.token('body', function getBody(req) {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-/* let phonebook = [
-    {
-        id: 1,
-        name: "Arto Hellas",
-        number: "040-123456"
-    },
-    {
-        id: 2,
-        name: "Ada Lovelace",
-        number: "39-44-5323523"
-    },
-    {
-        id: 3,
-        name: "Dan Abramov",
-        number: "12-43-234345"
-    },
-    {
-        id: 4,
-        name: "Mary Poppendick",
-        number: "39-23-6423122"
-    },
-] */
-
 app.get('/', (req,res) => {
     let url = req.hostname
     if (url === 'localhost') {
@@ -72,7 +49,6 @@ app.get('/info', (req,res,next) => {
 
 app.get('/api/persons/:id', (req,res,next) => {
     const id = req.params.id
-    // const person = phonebook.find((p => p.id === id))
     Person.findById(id)
         .then(person =>{
             if (!person) {
@@ -98,54 +74,19 @@ app.delete('/api/persons/:id', (req,res,next) => {
         .catch(error => next(error))
 })
 
-/* const randomId = () => {
-    let maxValue = 100000
-    let Id = Math.floor(Math.random() * maxValue) + 1;
-    while (phonebook.find(p => p.id === Id)) {
-        if (maxValue <= phonebook.length) {
-            maxValue *= 10
-        }
-        Id = Math.floor(Math.random() * maxValue) + 1;
-    }
-    return Id
-} */
-
 app.post('/api/persons', (req,res,next) => {
     const body = req.body
 
-    if (!body.name){
-        return res.status(400).json({
-            error: 'Name is a mandatory field'
-        })
-    } else if (!body.number){
-        return res.status(400).json({
-            error: 'Number is a mandatory field'
-        })
-    } else {   
-        Person.find({'name': body.name})
-            .then(p => {
-                if (p[0]){
-                    console.log(p[0])
-                    return res.status(409).json({
-                        error: 'Name must be unique'
-                    })
-                } else {
-                    const person = new Person ({
-                        name: body.name,
-                        number: body.number,
-                        // id: randomId()
-                    })
+    const person = new Person ({
+        name: body.name,
+        number: body.number,
+    })
                 
-                    person.save().then(savedPerson => {
-                        // phonebook = phonebook.concat(savedPerson)
-                        res.json(savedPerson)
-                    })
-                    .catch(error => next(error))
-                
-                }
-            })
-            .catch(error => next(error))
-    }
+    person.save().then(savedPerson => savedPerson.toJSON())
+        .then(savedAndFormatted => {
+            res.json(savedAndFormatted)
+        })
+        .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req,res,next) => {
@@ -171,9 +112,11 @@ app.use(unknownEndPoint)
 
 const errorHandler = (error, req, res, next) => {
     console.error(error.message)
-    if (error.name === 'CastError') {
-        return res.status(400).send({error: 'Malformatted id'})
-    }
+ /*    if (error.name === 'CastError') {
+        return res.status(400).send({error: `Malformatted id: ${error.message}`})
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).json({error: `All necessary data is not given: ${error.message}`})
+    } */
     next(error)
 }
 
