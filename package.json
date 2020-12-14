@@ -3,6 +3,10 @@
   "version": "0.9.0",
   "description": "Server side of phonebook app",
   "main": "index.js",
+  "engines" : { 
+    "node" : "^14.15.1",
+     "npm" : "^6.14.8"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
