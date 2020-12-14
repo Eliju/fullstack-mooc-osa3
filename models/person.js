@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 var uniqueValidator = require('mongoose-unique-validator');
+//mongoose.set('runValidators', true)
 
 // get an environment variable
 const un = process.env['MONGODB_USER'];
@@ -25,11 +26,13 @@ mongoose.connect(url,
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
+        minlength: 3,
         required: true,
         unique: true
     },
     number: {
         type: String,
+        minlength: 8,
         required: true
     }
 })

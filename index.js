@@ -92,12 +92,13 @@ app.post('/api/persons', (req,res,next) => {
 app.put('/api/persons/:id', (req,res,next) => {
     const body = req.body
 
+    // only the field that is updated, otherwise raises an error when validators are on
     const person = {
-        name: body.name,
         number: body.number
     }
 
-    Person.findByIdAndUpdate(req.params.id, person, {new: true})
+    // runValidators:true => otherwise validation is not working on update
+    Person.findByIdAndUpdate(req.params.id, person, {new: true, runValidators:true})  
         .then(updatedPerson => {
             res.json(updatedPerson)
         })
@@ -112,12 +113,7 @@ app.use(unknownEndPoint)
 
 const errorHandler = (error, req, res, next) => {
     console.error(error.message)
- /*    if (error.name === 'CastError') {
-        return res.status(400).send({error: `Malformatted id: ${error.message}`})
-    } else if (error.name === 'ValidationError') {
-        return res.status(400).json({error: `All necessary data is not given: ${error.message}`})
-    } */
-    next(error)
+    next(error.message)
 }
 
 app.use(errorHandler)
