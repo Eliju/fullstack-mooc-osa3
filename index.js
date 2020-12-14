@@ -116,32 +116,31 @@ app.post('/api/persons', (req,res,next) => {
         return res.status(400).json({
             error: 'Number is a mandatory field'
         })
-    } 
-   
-    Person.find({'name': body.name})
-        .then(p => {
-            if (p[0]){
-                console.log(p[0])
-                return res.status(409).json({
-                    error: 'Name must be unique'
-                })
-            } else {
-                const person = new Person ({
-                    name: body.name,
-                    number: body.number,
-                    // id: randomId()
-                })
-            
-                person.save().then(savedPerson => {
-                    // phonebook = phonebook.concat(savedPerson)
-                    res.json(savedPerson)
-                })
-                .catch(error => next(error))
-            
-            }
-        })
-        .catch(error => next(error))
-
+    } else {   
+        Person.find({'name': body.name})
+            .then(p => {
+                if (p[0]){
+                    console.log(p[0])
+                    return res.status(409).json({
+                        error: 'Name must be unique'
+                    })
+                } else {
+                    const person = new Person ({
+                        name: body.name,
+                        number: body.number,
+                        // id: randomId()
+                    })
+                
+                    person.save().then(savedPerson => {
+                        // phonebook = phonebook.concat(savedPerson)
+                        res.json(savedPerson)
+                    })
+                    .catch(error => next(error))
+                
+                }
+            })
+            .catch(error => next(error))
+    }
 })
 
 const unknownEndPoint = (req,res) => {
