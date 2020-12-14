@@ -58,11 +58,16 @@ app.get('/api/persons', (req,res,next) => {
     .catch(error => next(error))
 })
 
-app.get('/info', (req,res) => {
-    const size = phonebook.length
-    const curr_date = new Date()
+app.get('/info', (req,res,next) => {
+    let size = 0
+    Person.find({}).then(persons => {
+        size = persons.length
+        const curr_date = new Date()
 
-    res.send(`Phonebook has info for ${size} people <br/><br/>${curr_date}`)
+        res.send(`Phonebook has info for ${size} people <br/><br/>${curr_date}`)
+    })
+    .catch(error => next(error))
+    
 })
 
 app.get('/api/persons/:id', (req,res,next) => {
