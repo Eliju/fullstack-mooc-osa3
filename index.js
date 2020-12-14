@@ -67,27 +67,34 @@ app.get('/info', (req,res) => {
 app.get('/api/persons/:id', (req,res) => {
     const id = req.params.id
     // const person = phonebook.find((p => p.id === id))
-    Person.find({"_id":id}).then(person =>{
+    Person.findById(id).then(person =>{
         if (!person) {
             res.status(404).end()
         } else {
             res.json(person)
         }
     })
+    .catch(error => {
+        console.log("Error in id format:", error.message)
+        res.status(400).end()
+    })
 
 })
 
 app.delete('/api/persons/:id', (req,res) => {
-    const id = Number(req.params.id)
-    const person = phonebook.find((p => p.id === id))
-
-    phonebook = phonebook.filter (p => p.id !== id)
-
-    if (person){
-        res.status(204).end()
-    } else {
-        res.status(404).end()
-    }
+    const id = req.params.id
+    Person.deleteOne({"_id":id})
+        .then(result => {
+            if (result.deletedCount === 1){
+                res.status(204).end()
+            } else {
+                 res.status(404).end()
+            }
+            })
+        .catch(error => {
+            console.log("Error in id format:", error.message)
+            res.status(400).end()
+        })
 })
 
 /* const randomId = () => {
@@ -128,6 +135,10 @@ app.post('/api/persons', (req,res) => {
     person.save().then(savedPerson => {
         phonebook = phonebook.concat(savedPerson)
         res.json(savedPerson)
+    })
+    .catch(error => {
+        console.log("Error in saving phonebook entry:", error.message)
+        res.status(400).end()
     })
 })
 
