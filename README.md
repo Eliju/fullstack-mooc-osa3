@@ -9,3 +9,5 @@ http://phonebook-server-eliju.herokuapp.com/
 
 Tested both locally in http://localhost:3001/
 and in heroku in http://phonebook-server-eliju.herokuapp.com/
+
+Eslint checks done
